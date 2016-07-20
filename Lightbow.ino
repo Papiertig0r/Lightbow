@@ -84,7 +84,7 @@ uint32_t rainbow[] {
    strip.Color( 168, 0,   185)  
 };
 
-const int NUMBER_OF_FUNCTIONS = 9;
+const int NUMBER_OF_FUNCTIONS = 10;
 int functionCounter = 0;
 typedef void (* functionPointer) ();
 functionPointer functionPointerArray[NUMBER_OF_FUNCTIONS];
@@ -99,8 +99,9 @@ void setup() {
   functionPointerArray[4] = FastKitt;
   functionPointerArray[5] = FastDisco;
   functionPointerArray[6] = FastWhiteStrobe;
-  functionPointerArray[7] = Rainbow;
-  functionPointerArray[8] = FastPulse;
+  functionPointerArray[7] = FastPulse;
+  functionPointerArray[8] = Rainbow;
+  functionPointerArray[9] = FastForwardPacman;
   
   pinMode(ANALOG_HIGH, OUTPUT);
   pinMode(ANALOG_LOW, OUTPUT);
