@@ -40,6 +40,17 @@ uint32_t baseColors[] {
   strip.Color(255, 255, 255)
 };
 
+enum Colors {
+  black = 0,
+  red,
+  green,
+  blue,
+  yellow,
+  cyan,
+  magenta,
+  white
+};
+
 uint32_t rainbow[] {
    strip.Color( 128, 0,   0  ),
    strip.Color( 130, 40,  40 ),
