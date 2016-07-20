@@ -85,13 +85,48 @@ uint32_t rainbow[] {
 };
 
 const int NUMBER_OF_FUNCTIONS = 10;
-int functionCounter = 0;
+size_t functionCounter = 0;
 typedef void (* functionPointer) ();
 functionPointer functionPointerArray[NUMBER_OF_FUNCTIONS];
+
+template <typename T>
+class vector {
+  private:
+  T *list;
+  size_t listSize;
+
+  public:
+  vector() {
+    listSize = 0;
+  }
+  
+  void Add(T newItem) {
+    T *bufferList = (T *)malloc(Size() + sizeof(T));
+    bufferList = list;
+    bufferList[Size()] = newItem;
+    list = (T *)malloc(sizeof(bufferList));
+    list = bufferList;
+    listSize++;
+  }
+  
+  size_t Size() {
+    return listSize;
+  }
+
+  T& operator[](size_t index) {
+    return list[index];
+  }
+};
+
+vector<functionPointer> functionVector;
 
 void setup() {
   strip.begin();
 
+  functionVector.Add(ClearStrip);
+  functionVector.Add(SetStripWhite);  
+
+/*
   functionPointerArray[0] = ClearStrip;
   functionPointerArray[1] = SetStripWhite;
   functionPointerArray[2] = Flag;
@@ -113,10 +148,18 @@ void setup() {
   pinMode(BUTTON_LOW, OUTPUT);
   digitalWrite(BUTTON_LOW, LOW);
 
-  UpdateBrightness();
+  UpdateBrightness(); */
 }
 
-void loop() {  
+void loop() {
+  functionVector[functionCounter]();    
+  strip.show();
+  delay(1000);
+  
+  functionVector[functionCounter + 1]();    
+  strip.show();  
+  delay(1000);
+  /*
   strip.show();
   // put your main code here, to run repeatedly:
   if(millis() >= lastBrightnessUpdate + BRIGHTNESS_UPDATE_INTERVAL) {
@@ -124,7 +167,7 @@ void loop() {
   }
   CheckButton();
 
-  (*functionPointerArray[functionCounter])();
+  (*functionPointerArray[functionCounter])(); */
 }
 
 void UpdateBrightness() {
