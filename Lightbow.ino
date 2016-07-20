@@ -41,32 +41,32 @@ uint32_t baseColors[] {
 };
 
 uint32_t rainbow[] {
-   strip.Color( 128, 0,   0 ),  //0
-   strip.Color( 130, 40,  40 ), //82
-   strip.Color( 141, 83,  59 ), //63
-   strip.Color( 153, 102, 117), //89
-   strip.Color( 153, 102, 169), //52
+   strip.Color( 128, 0,   0  ),
+   strip.Color( 130, 40,  40 ),
+   strip.Color( 141, 83,  59 ),
+   strip.Color( 153, 102, 117),
+   strip.Color( 153, 102, 169),
    strip.Color( 140, 51,  148),
-   strip.Color( 128, 0,   128), //168
-   strip.Color( 101, 0,   155), //54
-   strip.Color( 72,  0,   255), //129
-   strip.Color( 4,   0,   208), //115
-   strip.Color( 0,   68,  220), //84
-   strip.Color( 1,   114, 226), //53
+   strip.Color( 128, 0,   128),
+   strip.Color( 101, 0,   155),
+   strip.Color( 72,  0,   255),
+   strip.Color( 4,   0,   208),
+   strip.Color( 0,   68,  220),
+   strip.Color( 1,   114, 226),
    strip.Color( 1,   159, 232),
    strip.Color( 11,  175, 162),
-   strip.Color( 23,  179, 77),
-   strip.Color( 0,   212, 28),
-   strip.Color( 0,   255, 0),
-   strip.Color( 128, 255, 0),
-   strip.Color( 200, 255, 0),
-   strip.Color( 255, 255, 0),
-   strip.Color( 255, 219, 0),
-   strip.Color( 255, 182, 0),
-   strip.Color( 255, 146, 0),
-   strip.Color( 255, 109, 0),
-   strip.Color( 255, 73,  0),
-   strip.Color( 255, 0,   0),
+   strip.Color( 23,  179, 77 ),
+   strip.Color( 0,   212, 28 ),
+   strip.Color( 0,   255, 0  ),
+   strip.Color( 128, 255, 0  ),
+   strip.Color( 200, 255, 0  ),
+   strip.Color( 255, 255, 0  ),
+   strip.Color( 255, 219, 0  ),
+   strip.Color( 255, 182, 0  ),
+   strip.Color( 255, 146, 0  ),
+   strip.Color( 255, 109, 0  ),
+   strip.Color( 255, 73,  0  ),
+   strip.Color( 255, 0,   0  ),
    strip.Color( 255, 0,   128),
    strip.Color( 255, 105, 180),
    strip.Color( 255, 0,   255),
