@@ -293,7 +293,8 @@ void Pulse(unsigned long actionTimeDelay, uint8_t R, uint8_t G, uint8_t B) {
 }
 
 void FastPulse() {
-  Pulse(10, 255, 255, 255);
+  Pulse(1, 255, 255, 255);
+}
 
 void AdvancePixels() {
   for(int i = NUMBER_OF_PIXELS - 1; i > 0; i--) {
