@@ -156,6 +156,7 @@ void CheckButton() {
       // only toggle the LED if the new button state is HIGH
       if (buttonState == LOW) {
         ResetActionCounter();
+        ClearStrip();
         
         functionCounter++;
         if(functionCounter >= NUMBER_OF_FUNCTIONS) {
