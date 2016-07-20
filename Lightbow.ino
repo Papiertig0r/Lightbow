@@ -294,5 +294,28 @@ void Pulse(unsigned long actionTimeDelay, uint8_t R, uint8_t G, uint8_t B) {
 
 void FastPulse() {
   Pulse(10, 255, 255, 255);
+
+void AdvancePixels() {
+  for(int i = NUMBER_OF_PIXELS - 1; i > 0; i--) {
+    strip.setPixelColor(i, strip.getPixelColor( i - 1) );
+  }
+}
+
+void Pacman(unsigned long actionTimeDelay, uint8_t pitch, uint32_t color) {
+  if(millis() > lastActionTime + actionTimeDelay) {
+    AdvancePixels();
+    if(actionCounter % (pitch - 1) == 0) {
+      strip.setPixelColor(0, color);
+    } else {
+      strip.setPixelColor(0, baseColors[black]);
+    }
+    
+    actionCounter++;
+    lastActionTime = millis();
+  }
+}
+
+void FastForwardPacman() {
+  Pacman(50, 5, baseColors[yellow]);
 }
 
