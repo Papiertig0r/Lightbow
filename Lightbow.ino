@@ -10,6 +10,9 @@
 #define STRIP_OUT 17
 #define NUMBER_OF_PIXELS 30
 
+#define FPS 60
+#define UPDATE_INTERVAL (1000 / FPS)
+
 #define SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
 #define BRIGHTNESS_RESOLUTION 1024/256
@@ -23,6 +26,8 @@ unsigned long lastActionTime = 0;
 
 int lastBrightness;
 unsigned long lastBrightnessUpdate = 0;
+
+unsigned long lastUpdate = 0;
 
 const int debounceDelay = 50; //change to define
 int buttonState;
@@ -117,14 +122,16 @@ void setup() {
 }
 
 void loop() {  
-  strip.show();
   // put your main code here, to run repeatedly:
   if(millis() >= lastBrightnessUpdate + BRIGHTNESS_UPDATE_INTERVAL) {
     UpdateBrightness();
   }
   CheckButton();
-
-  (*functionPointerArray[functionCounter])();
+  if(millis() >= lastUpdate + UPDATE_INTERVAL) {
+    strip.show();
+    (*functionPointerArray[functionCounter])();
+    lastUpdate = millis();
+  }  
 }
 
 void UpdateBrightness() {
@@ -133,7 +140,6 @@ void UpdateBrightness() {
   if(brightness != lastBrightness) {
     lastBrightness = brightness;
     strip.setBrightness(brightness);
-    strip.show();
   }
 
   lastBrightnessUpdate = millis();
