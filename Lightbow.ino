@@ -312,7 +312,7 @@ void AdvancePixels() {
 void Pacman(unsigned long actionTimeDelay, uint8_t pitch, uint32_t color) {
   if(millis() > lastActionTime + actionTimeDelay) {
     AdvancePixels();
-    if(actionCounter % (pitch - 1) == 0) {
+    if(actionCounter % (pitch + 1) == 0) {
       strip.setPixelColor(0, color);
     } else {
       strip.setPixelColor(0, baseColors[black]);
@@ -324,6 +324,6 @@ void Pacman(unsigned long actionTimeDelay, uint8_t pitch, uint32_t color) {
 }
 
 void FastForwardPacman() {
-  Pacman(50, 5, baseColors[yellow]);
+  Pacman(100, 5, baseColors[yellow]);
 }
 
