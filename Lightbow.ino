@@ -1,8 +1,17 @@
 #include <Adafruit_NeoPixel.h>
 
-#define ANALOG_INPUT 15
-#define ANALOG_HIGH 6
-#define ANALOG_LOW 2
+#define PLUGIN_BRIGHTNESS
+
+#ifdef PLUGIN_BRIGHTNESS
+  #define ANALOG_INPUT 15
+  #define ANALOG_HIGH 6
+  #define ANALOG_LOW 2
+  #define BRIGHTNESS_RESOLUTION 1024/256
+  #define BRIGHTNESS_UPDATE_INTERVAL 1000
+  
+  int lastBrightness;
+  unsigned long lastBrightnessUpdate = 0;
+#endif //PLUGIN_BRIGHTNESS
 
 #define BUTTON_INPUT 10
 #define BUTTON_LOW 12
@@ -15,24 +24,11 @@
 
 #define SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
-#define BRIGHTNESS_RESOLUTION 1024/256
-#define BRIGHTNESS_UPDATE_INTERVAL 1000
-
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMBER_OF_PIXELS, STRIP_OUT);
 
 int actionCounter = 0;
 int actionDirection = 1;
 unsigned long lastActionTime = 0;
-
-int lastBrightness;
-unsigned long lastBrightnessUpdate = 0;
-
-unsigned long lastUpdate = 0;
-
-const int debounceDelay = 50; //change to define
-int buttonState;
-int lastButtonState = LOW;
-unsigned long lastDebounceTime = 0;
 
 uint32_t baseColors[] {
   strip.Color(0, 0, 0),
@@ -108,11 +104,18 @@ void setup() {
   functionPointerArray[8] = Rainbow;
   functionPointerArray[9] = FastForwardPacman;
   
+  PrepareBrightnessPlugin();  
+  UpdateBrightness();
+  
+void PrepareBrightnessPlugin() {
+  #ifdef PLUGIN_BRIGHTNESS
   pinMode(ANALOG_HIGH, OUTPUT);
   pinMode(ANALOG_LOW, OUTPUT);
   pinMode(ANALOG_INPUT, INPUT);
   digitalWrite(ANALOG_HIGH, HIGH);
   digitalWrite(ANALOG_LOW, LOW);
+  #endif //PLUGIN_BRIGHTNESS
+}
 
   pinMode(BUTTON_INPUT, INPUT_PULLUP);
   pinMode(BUTTON_LOW, OUTPUT);
@@ -122,10 +125,8 @@ void setup() {
 }
 
 void loop() {  
-  // put your main code here, to run repeatedly:
-  if(millis() >= lastBrightnessUpdate + BRIGHTNESS_UPDATE_INTERVAL) {
-    UpdateBrightness();
-  }
+  UpdateBrightness();
+  
   CheckButton();
   if(millis() >= lastUpdate + UPDATE_INTERVAL) {
     strip.show();
@@ -135,14 +136,18 @@ void loop() {
 }
 
 void UpdateBrightness() {
-  int brightness = analogRead(ANALOG_INPUT);
-  brightness /= BRIGHTNESS_RESOLUTION;
-  if(brightness != lastBrightness) {
-    lastBrightness = brightness;
-    strip.setBrightness(brightness);
-  }
-
-  lastBrightnessUpdate = millis();
+  #ifdef PLUGIN_BRIGHTNESS
+  if(millis() >= lastBrightnessUpdate + BRIGHTNESS_UPDATE_INTERVAL) {
+    int brightness = analogRead(ANALOG_INPUT);
+    brightness /= BRIGHTNESS_RESOLUTION;
+    if(brightness != lastBrightness) {
+      lastBrightness = brightness;
+      strip.setBrightness(brightness);
+    }
+  
+    lastBrightnessUpdate = millis();
+  }  
+  #endif //PLUGIN_BRIGHTNESS
 }
 
 void CheckButton() {
