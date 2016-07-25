@@ -1,6 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 
 #define PLUGIN_BRIGHTNESS
+#define PLUGIN_FPS
 
 #ifdef PLUGIN_BRIGHTNESS
   #define ANALOG_INPUT 15
@@ -15,12 +16,16 @@
 
 #define BUTTON_INPUT 10
 #define BUTTON_LOW 12
+#ifdef PLUGIN_FPS
+  #define FPS 60
+  #define UPDATE_INTERVAL (1000 / FPS)
+  
+  unsigned long lastUpdate = 0;
+#endif //PLUGIN_FPS
 
 #define STRIP_OUT 17
 #define NUMBER_OF_PIXELS 30
 
-#define FPS 60
-#define UPDATE_INTERVAL (1000 / FPS)
 
 #define SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
@@ -128,11 +133,22 @@ void loop() {
   UpdateBrightness();
   
   CheckButton();
+  
+  Update();
+}
+
+void Update() {
+  #ifdef PLUGIN_FPS
   if(millis() >= lastUpdate + UPDATE_INTERVAL) {
+  #endif //PLUGIN_FPS
+  
     strip.show();
     (*functionPointerArray[functionCounter])();
+
+  #ifdef PLUGIN_FPS
     lastUpdate = millis();
-  }  
+  }
+  #endif //PLUGIN_FPS
 }
 
 void UpdateBrightness() {
