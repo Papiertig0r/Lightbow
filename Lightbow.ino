@@ -35,6 +35,8 @@
 #define STRIP_OUT 17
 #define NUMBER_OF_PIXELS 30
 
+#define FORWARD 0
+#define BACKWARD 1
 
 #define SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
@@ -356,13 +358,13 @@ void AttractPixels(uint8_t center) {
   }
 }
 
-void Pacman(unsigned long actionTimeDelay, uint8_t pitch, uint32_t color) {
+void Pacman(unsigned long actionTimeDelay, uint8_t dir, uint8_t pitch, uint32_t color) {
   if(millis() > lastActionTime + actionTimeDelay) {
-    AdvancePixels();
+    AttractPixels((1 - dir) * NUMBER_OF_PIXELS);
     if(actionCounter % (pitch + 1) == 0) {
-      strip.setPixelColor(0, color);
+      strip.setPixelColor((dir * NUMBER_OF_PIXELS) - dir, color);
     } else {
-      strip.setPixelColor(0, baseColors[black]);
+      strip.setPixelColor((dir * NUMBER_OF_PIXELS) - dir, baseColors[black]);
     }
     
     actionCounter++;
@@ -371,6 +373,5 @@ void Pacman(unsigned long actionTimeDelay, uint8_t pitch, uint32_t color) {
 }
 
 void FastForwardPacman() {
-  Pacman(100, 5, baseColors[yellow]);
+  Pacman(100, FORWARD, 5, baseColors[yellow]);
 }
-
