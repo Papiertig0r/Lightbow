@@ -281,18 +281,13 @@ void Rainbow() {
   }
 }
 
-void Pulse(unsigned long actionTimeDelay, uint8_t R, uint8_t G, uint8_t B) {
+void Pulse(unsigned long actionTimeDelay, unsigned int resolution, uint8_t R, uint8_t G, uint8_t B) {
   if(millis() > lastActionTime + actionTimeDelay) {
     
-    if(actionCounter < 0) {
-      actionCounter = 0;
-      actionDirection = 1;
-    } else if (actionCounter > 255) {
-      actionDirection = -1;
-      actionCounter = 255;
-    }
-
-    SetStripColor( R / 255 * actionCounter, G / 255 * actionCounter, B / 255 * actionCounter );
+    SetStripColor(
+      R / resolution * actionCounter * actionTimeDelay,
+      G / resolution * actionCounter * actionTimeDelay,
+      B / resolution * actionCounter * actionTimeDelay );
     
     actionCounter += actionDirection;
     lastActionTime = millis();
@@ -300,7 +295,7 @@ void Pulse(unsigned long actionTimeDelay, uint8_t R, uint8_t G, uint8_t B) {
 }
 
 void FastPulse() {
-  Pulse(1, 255, 255, 255);
+  Pulse(25, 100, 255, 255, 255);
 }
 
 void AdvancePixels() {
