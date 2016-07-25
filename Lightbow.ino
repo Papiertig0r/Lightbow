@@ -272,7 +272,7 @@ void Strobe(unsigned long actionTimeDelay, uint32_t color) {
 }
 
 void FastWhiteStrobe() {
-  Strobe(100, baseColors[7]);
+  Strobe(100, baseColors[white]);
 }
 
 void Rainbow() {
