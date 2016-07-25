@@ -2,6 +2,7 @@
 
 #define PLUGIN_BRIGHTNESS
 #define PLUGIN_FPS
+#define PLUGIN_SWITCHER
 
 #ifdef PLUGIN_BRIGHTNESS
   #define ANALOG_INPUT 15
@@ -14,8 +15,16 @@
   unsigned long lastBrightnessUpdate = 0;
 #endif //PLUGIN_BRIGHTNESS
 
-#define BUTTON_INPUT 10
-#define BUTTON_LOW 12
+#ifdef PLUGIN_SWITCHER
+  #define BUTTON_INPUT 10
+  #define BUTTON_LOW 12
+  
+  const int debounceDelay = 50; //change to define
+  int buttonState;
+  int lastButtonState = LOW;
+  unsigned long lastDebounceTime = 0;
+#endif //PLUGIN_SWITCHER
+
 #ifdef PLUGIN_FPS
   #define FPS 60
   #define UPDATE_INTERVAL (1000 / FPS)
@@ -112,6 +121,9 @@ void setup() {
   PrepareBrightnessPlugin();  
   UpdateBrightness();
   
+  PrepareSwitcherPlugin();
+}
+
 void PrepareBrightnessPlugin() {
   #ifdef PLUGIN_BRIGHTNESS
   pinMode(ANALOG_HIGH, OUTPUT);
@@ -122,11 +134,12 @@ void PrepareBrightnessPlugin() {
   #endif //PLUGIN_BRIGHTNESS
 }
 
+void PrepareSwitcherPlugin() {
+  #ifdef PLUGIN_SWITCHER
   pinMode(BUTTON_INPUT, INPUT_PULLUP);
   pinMode(BUTTON_LOW, OUTPUT);
-  digitalWrite(BUTTON_LOW, LOW);
-
-  UpdateBrightness();
+  digitalWrite(BUTTON_LOW, LOW);  
+  #endif //PLUGIN_SWITCHER
 }
 
 void loop() {  
@@ -167,6 +180,7 @@ void UpdateBrightness() {
 }
 
 void CheckButton() {
+  #ifdef PLUGIN_SWITCHER
   int reading = digitalRead(BUTTON_INPUT);
 
   if(reading != lastButtonState) {
@@ -195,6 +209,8 @@ void CheckButton() {
   }
 
   lastButtonState = reading;
+  
+  #endif //PLUGIN_SWITCHER
 }
 
 void ClearStrip() {
