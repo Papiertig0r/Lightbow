@@ -1,3 +1,4 @@
+#include <LinkedList.h>
 #include <Adafruit_NeoPixel.h>
 
 #define ANALOG_INPUT 15
@@ -7,7 +8,7 @@
 #define BUTTON_INPUT 10
 #define BUTTON_LOW 12
 
-#define STRIP_OUT 17
+#define STRIP_OUT 6
 #define NUMBER_OF_PIXELS 30
 
 #define SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
@@ -89,42 +90,13 @@ size_t functionCounter = 0;
 typedef void (* functionPointer) ();
 functionPointer functionPointerArray[NUMBER_OF_FUNCTIONS];
 
-template <typename T>
-class vector {
-  private:
-  T *list;
-  size_t listSize;
-
-  public:
-  vector() {
-    listSize = 0;
-  }
-  
-  void Add(T newItem) {
-    T *bufferList = (T *)malloc(Size() + sizeof(T));
-    bufferList = list;
-    bufferList[Size()] = newItem;
-    list = (T *)malloc(sizeof(bufferList));
-    list = bufferList;
-    listSize++;
-  }
-  
-  size_t Size() {
-    return listSize;
-  }
-
-  T& operator[](size_t index) {
-    return list[index];
-  }
-};
-
-vector<functionPointer> functionVector;
+LinkedList<functionPointer> functionVector;
 
 void setup() {
   strip.begin();
 
-  functionVector.Add(ClearStrip);
-  functionVector.Add(SetStripWhite);  
+  functionVector.add(ClearStrip);
+  functionVector.add(SetStripWhite);  
 
 /*
   functionPointerArray[0] = ClearStrip;
@@ -152,11 +124,11 @@ void setup() {
 }
 
 void loop() {
-  functionVector[functionCounter]();    
+  functionVector.get(0)();    
   strip.show();
   delay(1000);
   
-  functionVector[functionCounter + 1]();    
+  functionVector.get(1)();    
   strip.show();  
   delay(1000);
   /*
