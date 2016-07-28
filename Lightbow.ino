@@ -350,13 +350,13 @@ void RetreatPixels() {
 }
 
 void AttractPixels(uint8_t center) {
-  for(int i = NUMBER_OF_PIXELS - 1; i > 0; i--) {
+  for(int i = NUMBER_OF_PIXELS - 1; i >= 0; i--) {
     if(i < center) {
       strip.setPixelColor(i, strip.getPixelColor( i - 1) );
     }
   }
   for(int i = 0; i < NUMBER_OF_PIXELS - 1; i++) {
-    if(i > center) {
+    if(i >= center) {
       strip.setPixelColor(i, strip.getPixelColor( i + 1) );
     }
   }
