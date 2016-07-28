@@ -1,3 +1,4 @@
+#include <LinkedList.h>
 #include <Adafruit_NeoPixel.h>
 
 #define PLUGIN_BRIGHTNESS
@@ -101,24 +102,23 @@ uint32_t rainbow[] {
    strip.Color( 168, 0,   185)  
 };
 
-const int NUMBER_OF_FUNCTIONS = 10;
 int functionCounter = 0;
 typedef void (* functionPointer) ();
-functionPointer functionPointerArray[NUMBER_OF_FUNCTIONS];
+LinkedList<functionPointer> functionPointerArray;
 
 void setup() {
   strip.begin();
 
-  functionPointerArray[0] = ClearStrip;
-  functionPointerArray[1] = SetStripWhite;
-  functionPointerArray[2] = Flag;
-  functionPointerArray[3] = SlowKitt;
-  functionPointerArray[4] = FastKitt;
-  functionPointerArray[5] = FastDisco;
-  functionPointerArray[6] = FastWhiteStrobe;
-  functionPointerArray[7] = FastPulse;
-  functionPointerArray[8] = Rainbow;
-  functionPointerArray[9] = FastForwardPacman;
+  functionPointerArray.add(ClearStrip);
+  functionPointerArray.add(SetStripWhite);
+  functionPointerArray.add(Flag);
+  functionPointerArray.add(SlowKitt);
+  functionPointerArray.add(FastKitt);
+  functionPointerArray.add(FastDisco);
+  functionPointerArray.add(FastWhiteStrobe);
+  functionPointerArray.add(FastPulse);
+  functionPointerArray.add(Rainbow);
+  functionPointerArray.add(FastForwardPacman);
   
   PrepareBrightnessPlugin();  
   UpdateBrightness();
@@ -158,7 +158,7 @@ void Update() {
   #endif //PLUGIN_FPS
   
     strip.show();
-    (*functionPointerArray[functionCounter])();
+    functionPointerArray.get(functionCounter)();
 
   #ifdef PLUGIN_FPS
     lastUpdate = millis();
@@ -200,8 +200,7 @@ void CheckButton() {
       // only toggle the LED if the new button state is HIGH
       if (buttonState == LOW) {
         ResetActionCounter();
-        ClearStrip();
-        
+        ClearStrip();        
         AdvanceFunctionCounter();
       } 
     }
@@ -214,7 +213,7 @@ void CheckButton() {
 
 void AdvanceFunctionCounter() {
   functionCounter++;
-  if(functionCounter >= NUMBER_OF_FUNCTIONS) {
+  if(functionCounter >= functionPointerArray.size()) {
     functionCounter = 0;
   }
 }
