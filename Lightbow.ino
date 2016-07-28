@@ -202,10 +202,7 @@ void CheckButton() {
         ResetActionCounter();
         ClearStrip();
         
-        functionCounter++;
-        if(functionCounter >= NUMBER_OF_FUNCTIONS) {
-          functionCounter = 0;
-        }
+        AdvanceFunctionCounter();
       } 
     }
   }
@@ -213,6 +210,13 @@ void CheckButton() {
   lastButtonState = reading;
   
   #endif //PLUGIN_SWITCHER
+}
+
+void AdvanceFunctionCounter() {
+  functionCounter++;
+  if(functionCounter >= NUMBER_OF_FUNCTIONS) {
+    functionCounter = 0;
+  }
 }
 
 void ClearStrip() {
